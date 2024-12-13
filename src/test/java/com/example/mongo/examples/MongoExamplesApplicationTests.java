@@ -107,7 +107,7 @@ class MongoExamplesApplicationTests {
     }
 
     @Test
-    public void deleteDocument() {;
+    public void deleteDocument() {
         jokesService.insertAll(getModels());
         jokesService.delete("Why did the cookie cry?");
 
