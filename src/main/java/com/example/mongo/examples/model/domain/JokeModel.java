@@ -8,4 +8,13 @@ public record JokeModel(
         String type,
         String setup,
         String punchline) {
+
+    @Override
+    public String toString() {
+        return "{" +
+                "type='" + type + '\'' +
+                ", setup='" + setup + '\'' +
+                ", punchline='" + punchline + '\'' +
+                '}';
+    }
 }

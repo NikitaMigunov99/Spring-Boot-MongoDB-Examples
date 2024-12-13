@@ -2,6 +2,9 @@ package com.example.mongo.examples.service;
 
 import com.example.mongo.examples.model.domain.JokeModel;
 import com.example.mongo.examples.model.entity.JokeEntity;
+import com.mongodb.client.result.DeleteResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,9 +12,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public final class JokesService {
+
+    private static final Logger log = LoggerFactory.getLogger(JokesService.class);
 
     private final Converter<List<JokeEntity>, List<JokeModel>> mapper;
     private final Converter<JokeModel, JokeEntity> mapperToEntity;
@@ -41,7 +47,7 @@ public final class JokesService {
         Query query = new Query();
         String mongoRequest = "/" + request + "/";
         query.addCriteria(new Criteria().orOperator(
-                getCriteria("setup", mongoRequest), getCriteria("punchline", mongoRequest)
+                        getCriteria("setup", mongoRequest), getCriteria("punchline", mongoRequest)
                 )
         );
         List<JokeEntity> entities = mongoTemplate.find(query, JokeEntity.class);
@@ -53,6 +59,11 @@ public final class JokesService {
         mongoTemplate.save(entity);
     }
 
+    public void insertAll(List<JokeModel> models) {
+        List<JokeEntity> entities = models.stream().map(mapperToEntity::convert).collect(Collectors.toList());
+        mongoTemplate.insertAll(entities);
+    }
+
     public void updateTypeById(int id, String type) {
         List<JokeEntity> entityList = mongoTemplate.findAll(JokeEntity.class);
         JokeEntity entity = entityList.get(id);
@@ -62,6 +73,16 @@ public final class JokesService {
 
     public long getJokesCount() {
         return mongoTemplate.count(new Query(), "jokes");
+    }
+
+    public void delete(String request) {
+        Query query = new Query();
+        String mongoRequest = "/" + request + "/";
+        query.addCriteria(
+                new Criteria().orOperator(getCriteria("setup", mongoRequest), getCriteria("punchline", mongoRequest))
+        );
+        DeleteResult result = mongoTemplate.remove(query, JokeEntity.class);
+        log.info(result.toString());
     }
 
     private Criteria getCriteria(String field, String request) {

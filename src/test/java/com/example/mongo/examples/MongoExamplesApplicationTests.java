@@ -1,6 +1,7 @@
 package com.example.mongo.examples;
 
 import com.example.mongo.examples.mapper.JokesDomainToEntityMapper;
+import com.example.mongo.examples.mapper.JokesEntityToDomainMapper;
 import com.example.mongo.examples.model.domain.JokeModel;
 import com.example.mongo.examples.model.entity.JokeEntity;
 import com.example.mongo.examples.service.JokesService;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +29,8 @@ class MongoExamplesApplicationTests {
     private MongoTemplate mongoTemplate;
     @Autowired
     private JokesDomainToEntityMapper jokesDomainToEntityMapper;
+    @Autowired
+    private JokesEntityToDomainMapper jokesEntityToDomainMapper;
     @Autowired
     private JokesService jokesService;
 
@@ -86,6 +91,30 @@ class MongoExamplesApplicationTests {
         Assertions.assertEquals(10, jokesService.getJokesCount());
     }
 
+    @Test
+    public void deleteField() {
+        mongoTemplate.insertAll(getEntities());
+        Assertions.assertEquals(10, jokesService.getJokesCount());
+
+        System.out.println("Models before deleting setup field \n" + getModels());
+
+        Query query = new Query();
+        Update update = new Update().unset("type");
+        mongoTemplate.updateMulti(query, update, JokeEntity.class);
+
+        List<JokeModel> modifiedModels = jokesEntityToDomainMapper.convert(mongoTemplate.findAll(JokeEntity.class));
+        System.out.println("Models after deleting setup field \n" + modifiedModels);
+    }
+
+    @Test
+    public void deleteDocument() {;
+        jokesService.insertAll(getModels());
+        jokesService.delete("Why did the cookie cry?");
+
+        List<JokeModel> actual = jokesService.getJokesList();
+        Assertions.assertEquals(9, actual.size());
+    }
+
     private void compareJokes(JokeModel expected, JokeModel actual) {
         Assertions.assertEquals(expected.type(), actual.type());
         Assertions.assertEquals(expected.setup(), actual.setup());
@@ -93,7 +122,8 @@ class MongoExamplesApplicationTests {
     }
 
     private List<JokeModel> getModels() {
-        return Arrays.asList(new JokeModel(
+        return Arrays.asList(
+                new JokeModel(
                         "96",
                         "general",
                         "Did you hear that David lost his ID in prague?",
