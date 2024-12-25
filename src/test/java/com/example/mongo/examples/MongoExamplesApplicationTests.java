@@ -19,20 +19,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootTest(classes = TestMongoExamplesApplication.class)
-class MongoExamplesApplicationTests {
+class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
 
     private static final String JOKES = "jokes";
     private static final int ZERO = 0;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
     @Autowired
     private JokesDomainToEntityMapper jokesDomainToEntityMapper;
     @Autowired
     private JokesEntityToDomainMapper jokesEntityToDomainMapper;
     @Autowired
     private JokesService jokesService;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @AfterEach
     public void tearDown() {
