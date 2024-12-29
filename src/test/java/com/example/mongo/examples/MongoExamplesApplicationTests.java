@@ -122,70 +122,64 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
     private List<JokeModel> getModels() {
         return Arrays.asList(
                 new JokeModel(
-                        "96",
+                        "1",
                         "general",
                         "Did you hear that David lost his ID in prague?",
                         "Now we just have to call him Dav."
                 ),
                 new JokeModel(
-                        "185",
+                        "2",
                         "general",
                         "What did the traffic light say to the car as it passed?",
                         "Don't look I'm changing!"
                 ),
                 new JokeModel(
-                        "162",
+                        "3",
                         "general",
                         "Where was the Declaration of Independence signed?",
                         "At the bottom! "
                 ),
                 new JokeModel(
-                        "438",
+                        "4",
                         "programming",
                         "Why did the developer go broke?",
                         "They kept spending all their cache."
                 ),
                 new JokeModel(
-                        "361",
+                        "5",
                         "general",
                         "Why does Waldo only wear stripes?",
                         "Because he doesn't want to be spotted."
                 ),
                 new JokeModel(
-                        "321",
+                        "6",
                         "general",
                         "Why did the cookie cry?",
                         "It was feeling crumby."
                 ),
                 new JokeModel(
-                        "412",
+                        "7",
                         "programming",
                         "What do you get when you cross a React developer with a mathematician?",
                         "A function component."
                 ),
                 new JokeModel(
-                        "131",
+                        "8",
                         "general",
                         "What do you call a pig that knows karate?",
                         "You will see one later and one in a while."
                 ),
                 new JokeModel(
-                        "212",
+                        "9",
                         "general",
                         "How do you tell the difference between a crocodile and an alligator?",
                         "A pork chop!"
                 ),
                 new JokeModel(
-                        "214",
+                        "10",
                         "general",
                         "What do you call a pile of cats?",
                         "A Meowtain."
-                ),
-                new JokeModel(
-                        "321",
-                        "general",
-                        "Why did the cookie cry?",
-                        "It was feeling crumby."
                 )
         );
     }
