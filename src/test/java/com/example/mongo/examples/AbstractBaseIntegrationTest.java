@@ -17,8 +17,6 @@ class AbstractBaseIntegrationTest {
     @DynamicPropertySource
     static void containersProperties(DynamicPropertyRegistry registry) {
         mongoDBContainer.start();
-        System.out.println("AbstractBaseIntegrationTest host " + mongoDBContainer.getHost());
-        System.out.println("AbstractBaseIntegrationTest port " + mongoDBContainer.getFirstMappedPort());
         registry.add("spring.data.mongodb.host", mongoDBContainer::getHost);
         registry.add("spring.data.mongodb.port", mongoDBContainer::getFirstMappedPort);
     }

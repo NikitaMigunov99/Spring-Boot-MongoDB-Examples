@@ -30,9 +30,6 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
         String host = env.getProperty("spring.data.mongodb.host");
         String port = env.getProperty("spring.data.mongodb.port");
         String connectionURI = "mongodb://" + host + ":" + port + "/" + getDatabaseName();
-        System.out.println("MongoConfiguration host " + host);
-        System.out.println("MongoConfiguration port " + port);
-        System.out.println("connectionURI " + connectionURI);
         ConnectionString connectionString = new ConnectionString(connectionURI);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
