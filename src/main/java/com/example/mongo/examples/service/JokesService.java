@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,10 +45,12 @@ public final class JokesService {
     }
 
     public List<JokeModel> getJokesBySearch(String request) {
+        Pattern pattern = Pattern.compile(".*" + request + ".*", Pattern.CASE_INSENSITIVE);
         Query query = new Query();
-        String mongoRequest = "/" + request + "/";
-        query.addCriteria(new Criteria().orOperator(
-                        getCriteria("setup", mongoRequest), getCriteria("punchline", mongoRequest)
+        query.addCriteria(
+                new Criteria().orOperator(
+                        Criteria.where("setup").regex(pattern),
+                        Criteria.where("punchline").regex(pattern)
                 )
         );
         List<JokeEntity> entities = mongoTemplate.find(query, JokeEntity.class);
@@ -77,9 +80,12 @@ public final class JokesService {
 
     public void delete(String request) {
         Query query = new Query();
-        String mongoRequest = "/" + request + "/";
+        Pattern pattern = Pattern.compile(".*" + request + ".*", Pattern.CASE_INSENSITIVE);
         query.addCriteria(
-                new Criteria().orOperator(getCriteria("setup", mongoRequest), getCriteria("punchline", mongoRequest))
+                new Criteria().orOperator(
+                        Criteria.where("setup").regex(pattern),
+                        Criteria.where("punchline").regex(pattern)
+                )
         );
         DeleteResult result = mongoTemplate.remove(query, JokeEntity.class);
         log.info(result.toString());
