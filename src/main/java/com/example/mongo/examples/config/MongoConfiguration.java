@@ -4,23 +4,21 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 
 import java.util.Collection;
 import java.util.Collections;
 
 @Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties(
-        prefix = "spring.data.mongodb"
-)
 public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
-    private String host;
-    private String port;
+    private final Environment env;
+
+    public MongoConfiguration(Environment env) {
+        this.env = env;
+    }
 
     @Override
     protected String getDatabaseName() {
@@ -29,6 +27,8 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
+        String host = env.getProperty("spring.data.mongodb.host");
+        String port = env.getProperty("spring.data.mongodb.port");
         String connectionURI = "mongodb://" + host + ":" + port + "/" + getDatabaseName();
         System.out.println("MongoConfiguration host " + host);
         System.out.println("MongoConfiguration port " + port);
