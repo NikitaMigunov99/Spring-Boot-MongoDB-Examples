@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class JokeEntity {
 
     @Id
-    private final Long id;
+    private final String id;
     private final String type;
     private final String setup;
     private final String punchline;
@@ -18,7 +18,7 @@ public class JokeEntity {
      * @param setup setup
      * @param punchline punchline
      */
-    public JokeEntity(Long id, String type, String setup, String punchline) {
+    public JokeEntity(String id, String type, String setup, String punchline) {
         this.id = id;
         this.type = type;
         this.setup = setup;
@@ -37,7 +37,7 @@ public class JokeEntity {
         this.punchline = punchline;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -53,7 +53,7 @@ public class JokeEntity {
         return punchline;
     }
 
-    JokeEntity withId(Long id) {
+    JokeEntity withId(String id) {
         return new JokeEntity(id, this.type, this.setup, this.punchline);
     }
 }

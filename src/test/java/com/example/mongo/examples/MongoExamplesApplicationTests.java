@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -38,7 +37,7 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
         mongoTemplate.dropCollection(JOKES);
     }
 
-   // @Test
+    @Test
     public void getJokeByType() {
         List<JokeModel> jokes = getModels();
         mongoTemplate.insertAll(getEntities());
@@ -62,13 +61,13 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
         }
     }
 
-    //@Test
+    @Test
     public void getJokesBySearch() {
         mongoTemplate.insertAll(getEntities());
         Assertions.assertEquals(3, jokesService.getJokesBySearch("was").size());
     }
 
-    //@Test
+    @Test
     public void saveJoke() {
         JokeModel model = getModels().get(ZERO);
         jokesService.saveJoke(model);
@@ -76,7 +75,7 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
         compareJokes(model, jokeModel);
     }
 
-   // @Test
+    @Test
     public void updateTypeByIndex() {
         mongoTemplate.insertAll(getEntities());
         jokesService.updateTypeById(2, "new type");
@@ -84,13 +83,13 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
         Assertions.assertEquals("new type", jokeModel.type());
     }
 
-    //@Test
+    @Test
     public void getJokesCount() {
         mongoTemplate.insertAll(getEntities());
         Assertions.assertEquals(10, jokesService.getJokesCount());
     }
 
-    //@Test
+    @Test
     public void deleteField() {
         mongoTemplate.insertAll(getEntities());
         Assertions.assertEquals(10, jokesService.getJokesCount());
@@ -105,7 +104,7 @@ class MongoExamplesApplicationTests extends AbstractBaseIntegrationTest {
         System.out.println("Models after deleting setup field \n" + modifiedModels);
     }
 
-   // @Test
+    @Test
     public void deleteDocument() {
         jokesService.insertAll(getModels());
         jokesService.delete("Why did the cookie cry?");
